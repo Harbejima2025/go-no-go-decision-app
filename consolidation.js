@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     displayResponses(responses);
   });
-
+generateSummary(data);
   function displayResponses(data) {
     output.innerHTML = ""; // Clear old results
 
