@@ -1,77 +1,47 @@
+// script.js
+
+// Wait for DOM ready
 document.addEventListener("DOMContentLoaded", () => {
-  const questionContainer = document.getElementById("questionContainer");
-  const modeSelect = document.getElementById("modeSelect");
-  const saveButton = document.getElementById("saveButton");
-  const usernameInput = document.getElementById("username");
+  const container = document.getElementById("questionsContainer");
+  const form = document.getElementById("responseForm");
+  const jsonOutput = document.getElementById("jsonOutput");
 
-  // Render the questions dynamically
-  function renderQuestions(mode) {
-    questionContainer.innerHTML = "";
+  // For each question, create input area
+  questions.forEach((q) => {
+    const div = document.createElement("div");
+    div.className = "question-block";
 
-    questionsData.forEach((area, areaIndex) => {
-      const areaTitle = document.createElement("h2");
-      areaTitle.textContent = `${areaIndex + 1}. ${area.area}`;
-      questionContainer.appendChild(areaTitle);
+    const label = document.createElement("label");
+    label.htmlFor = q.id;
+    label.innerHTML = `<strong>${q.id} (${q.area} - ${q.type}):</strong> ${q.text}`;
 
-      area.categories.forEach((category, catIndex) => {
-        const categoryTitle = document.createElement("h3");
-        categoryTitle.textContent = `${areaIndex + 1}.${catIndex + 1} ${category.subArea}`;
-        questionContainer.appendChild(categoryTitle);
+    const textarea = document.createElement("textarea");
+    textarea.id = q.id;
+    textarea.name = q.id;
+    textarea.rows = 3;
+    textarea.cols = 80;
+    textarea.placeholder = "Type your answer here...";
 
-        category.questions.forEach((q) => {
-          const wrapper = document.createElement("div");
+    div.appendChild(label);
+    div.appendChild(document.createElement("br"));
+    div.appendChild(textarea);
+    container.appendChild(div);
+  });
 
-          const label = document.createElement("label");
-          label.textContent = `${q.id} — ${q[mode]}`;
-          label.setAttribute("for", `q_${q.id}`);
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-          const textarea = document.createElement("textarea");
-          textarea.id = `q_${q.id}`;
-          textarea.name = q.id;
-
-          wrapper.appendChild(label);
-          wrapper.appendChild(textarea);
-          questionContainer.appendChild(wrapper);
-        });
-      });
-    });
-  }
-
-  // Save responses to JSON
-  saveButton.addEventListener("click", () => {
-    const username = usernameInput.value.trim();
-    if (!username) {
-      alert("Please enter your name before saving.");
-      return;
-    }
-
-    const mode = modeSelect.value;
-    const responses = {
-      user: username,
-      mode: mode,
-      responses: {},
-      submittedAt: new Date().toISOString()
+    const response = {
+      timestamp: new Date().toISOString(),
+      answers: {},
     };
 
-    const textareas = document.querySelectorAll("textarea");
-    textareas.forEach((ta) => {
-      responses.responses[ta.name] = ta.value.trim();
+    questions.forEach((q) => {
+      const val = document.getElementById(q.id).value.trim();
+      response.answers[q.id] = val;
     });
 
-    const blob = new Blob([JSON.stringify(responses, null, 2)], {
-      type: "application/json",
-    });
-
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `${username}_${mode}_responses.json`;
-    link.click();
+    jsonOutput.value = JSON.stringify(response, null, 2);
+    alert("Answers collected! Please copy the JSON output and save it.");
   });
-
-  // Initial render
-  modeSelect.addEventListener("change", () => {
-    renderQuestions(modeSelect.value);
-  });
-
-  renderQuestions(modeSelect.value);
 });
