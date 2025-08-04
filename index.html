@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Go/No-Go Decision System</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Go/No-Go Decision System</h1>
+
+    <label for="username">Your Name:</label>
+    <input type="text" id="username" placeholder="Enter your name" />
+
+    <label for="modeSelect">Choose Mode:</label>
+    <select id="modeSelect">
+      <option value="grants">GRANTS</option>
+      <option value="contracts">CONTRACTS</option>
+    </select>
+
+    <div id="questionContainer"></div>
+
+    <button id="saveButton">Save My Responses</button>
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
