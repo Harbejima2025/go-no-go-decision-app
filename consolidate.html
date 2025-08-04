@@ -1,10 +1,21 @@
-<!-- Place inside consolidate.html or below form section in index.html -->
-<hr />
-<h2>🧩 Consolidate Responses</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Consolidate Responses - Go/No-Go</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>📊 Consolidate Responses</h1>
+    <p>Upload 10+ user responses (JSON files) to see consolidated view.</p>
 
-<label for="uploadResponses">Upload multiple JSON responses:</label>
-<input type="file" id="uploadResponses" multiple accept=".json" />
+    <input type="file" id="uploadResponses" multiple accept=".json" />
 
-<div id="output"></div>
+    <hr />
+    <div id="consolidatedOutput"></div>
+  </div>
 
-<script src="consolidation.js"></script>
+  <script src="consolidation.js"></script>
+</body>
+</html>
