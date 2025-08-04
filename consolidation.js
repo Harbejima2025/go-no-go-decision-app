@@ -1,33 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
   const uploadInput = document.getElementById("uploadResponses");
-  const outputContainer = document.getElementById("output");
+  const output = document.getElementById("consolidatedOutput");
 
   uploadInput.addEventListener("change", async () => {
     const files = Array.from(uploadInput.files);
-    const allData = [];
+    const responses = [];
 
     for (const file of files) {
       const text = await file.text();
       const json = JSON.parse(text);
-      allData.push(json);
+      responses.push(json);
     }
 
-    renderConsolidatedView(allData);
+    displayResponses(responses);
   });
 
-  function renderConsolidatedView(data) {
-    outputContainer.innerHTML = "";
+  function displayResponses(data) {
+    output.innerHTML = ""; // Clear old results
 
-    data.forEach((person, index) => {
-      const personSection = document.createElement("section");
-      personSection.classList.add("user-section");
+    data.forEach((res, index) => {
+      const section = document.createElement("section");
+      section.className = "user-section";
 
-      const header = document.createElement("h2");
-      header.textContent = `${index + 1}. ${person.user} (${person.mode.toUpperCase()})`;
-      personSection.appendChild(header);
+      const title = document.createElement("h2");
+      title.textContent = `${index + 1}. ${res.user} (${res.mode.toUpperCase()})`;
+      section.appendChild(title);
 
-      const responseTable = document.createElement("table");
-      responseTable.innerHTML = `
+      const table = document.createElement("table");
+      table.innerHTML = `
         <thead>
           <tr>
             <th>Question ID</th>
@@ -35,17 +35,18 @@ document.addEventListener("DOMContentLoaded", () => {
           </tr>
         </thead>
         <tbody>
-          ${Object.entries(person.responses).map(([id, answer]) => `
-            <tr>
-              <td>${id}</td>
-              <td>${answer || "<i>No response</i>"}</td>
-            </tr>
-          `).join("")}
+          ${Object.entries(res.responses)
+            .map(([qid, answer]) => `
+              <tr>
+                <td>${qid}</td>
+                <td>${answer || "<i>No response</i>"}</td>
+              </tr>
+            `).join("")}
         </tbody>
       `;
 
-      personSection.appendChild(responseTable);
-      outputContainer.appendChild(personSection);
+      section.appendChild(table);
+      output.appendChild(section);
     });
   }
 });
