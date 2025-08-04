@@ -1,9 +1,9 @@
 const questionsData = [
   {
-    area: "Donor",
+    area: "Donor",  // Main category
     categories: [
       {
-        subArea: "Donor relationship",
+        subArea: "Donor relationship",  // Subcategory
         questions: [
           {
             id: "1.1.1",
@@ -38,14 +38,13 @@ const questionsData = [
           {
             id: "2.1.1",
             grants: "Does the FO have or can it quickly establish competitive implementing partners/consortia needed to succeed? Who?",
-            contracts: "Does the FO have or can it quickly establish competitive implementing partners/consortia needed to succeed?  In the comments indicate the names"
+            contracts: "Does the FO have or can it quickly establish competitive implementing partners/consortia needed to succeed? In the comments indicate the names"
           },
           {
             id: "2.1.2",
             grants: "Does the FO have partnering/consortia/teaming agreements in place for this opportunity? Did/will partners pass due diligence checks?",
             contracts: "Does the FO have partnering/consortia/teaming agreements in place for this opportunity? Did/will partners pass due diligence checks?"
           }
-          // ... more under Implementing Partners
         ]
       },
       {
@@ -58,8 +57,8 @@ const questionsData = [
           }
         ]
       }
-      // ... other subAreas like Partnering Requirement, Bidding Alone, etc.
+      // ... (continue adding subAreas and questions)
     ]
-  }
-  // ... More areas like Alignment, Proposal Writing, etc.
+  },
+  // ... Add other Areas like Alignment, Proposal Writing, Implementation Capability, Financial, Implementation Risk
 ];
