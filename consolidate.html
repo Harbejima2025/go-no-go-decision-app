@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Consolidate Responses - Go/No-Go</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Consolidate Responses</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>📊 Consolidate Responses</h1>
-    <p>Upload 10+ user responses (JSON files) to see consolidated view.</p>
+  <h1>Consolidate Multiple Responses</h1>
 
-    <input type="file" id="uploadResponses" multiple accept=".json" />
+  <p>Paste JSON responses from multiple people below, separated by a blank line:</p>
+  <textarea id="responsesInput" rows="20" cols="100" placeholder="Paste JSON responses here"></textarea>
+  <br />
+  <button id="consolidateBtn">Consolidate Responses</button>
 
-    <hr />
-    <hr />
-<h2>📌 Consolidated Summary</h2>
-<div id="summaryContainer"></div>
-    <div id="consolidatedOutput"></div>
-  </div>
+  <h2>Consolidated Responses</h2>
+  <div id="consolidatedOutput"></div>
 
-  <script src="consolidation.js"></script>
-  <script src="summary.js"></script>
+  <h2>Auto Summary & Recommendation</h2>
+  <div id="summaryOutput"></div>
+
+<script src="questions.js"></script>
+<script src="consolidation.js"></script>
+<script src="summary.js"></script>
 </body>
 </html>
