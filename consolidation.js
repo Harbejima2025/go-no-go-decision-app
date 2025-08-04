@@ -1,52 +1,80 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const uploadInput = document.getElementById("uploadResponses");
-  const output = document.getElementById("consolidatedOutput");
+// consolidation.js
 
-  uploadInput.addEventListener("change", async () => {
-    const files = Array.from(uploadInput.files);
-    const responses = [];
-
-    for (const file of files) {
-      const text = await file.text();
-      const json = JSON.parse(text);
-      responses.push(json);
+function parseResponses(rawText) {
+  // Split by empty line(s)
+  const chunks = rawText.trim().split(/\n\s*\n/);
+  const parsed = [];
+  for (const chunk of chunks) {
+    try {
+      const obj = JSON.parse(chunk);
+      if (obj.answers) {
+        parsed.push(obj);
+      }
+    } catch {
+      // skip invalid JSON
     }
-
-    displayResponses(responses);
-  });
-generateSummary(data);
-  function displayResponses(data) {
-    output.innerHTML = ""; // Clear old results
-
-    data.forEach((res, index) => {
-      const section = document.createElement("section");
-      section.className = "user-section";
-
-      const title = document.createElement("h2");
-      title.textContent = `${index + 1}. ${res.user} (${res.mode.toUpperCase()})`;
-      section.appendChild(title);
-
-      const table = document.createElement("table");
-      table.innerHTML = `
-        <thead>
-          <tr>
-            <th>Question ID</th>
-            <th>Response</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${Object.entries(res.responses)
-            .map(([qid, answer]) => `
-              <tr>
-                <td>${qid}</td>
-                <td>${answer || "<i>No response</i>"}</td>
-              </tr>
-            `).join("")}
-        </tbody>
-      `;
-
-      section.appendChild(table);
-      output.appendChild(section);
-    });
   }
+  return parsed;
+}
+
+function consolidateAnswers(responses) {
+  // Structure: { questionId: [answers from people] }
+  const consolidated = {};
+  questions.forEach((q) => {
+    consolidated[q.id] = [];
+  });
+
+  responses.forEach((resp) => {
+    Object.entries(resp.answers).forEach(([qid, ans]) => {
+      if (ans && ans.trim() !== "") {
+        consolidated[qid].push(ans.trim());
+      }
+    });
+  });
+
+  return consolidated;
+}
+
+function displayConsolidated(consolidated) {
+  const container = document.getElementById("consolidatedOutput");
+  container.innerHTML = "";
+
+  for (const [qid, answers] of Object.entries(consolidated)) {
+    if (answers.length === 0) continue;
+    const q = questions.find((q) => q.id === qid);
+    const div = document.createElement("div");
+    div.className = "consolidated-block";
+
+    const title = document.createElement("h3");
+    title.textContent = `${qid} (${q.area}): ${q.text}`;
+    div.appendChild(title);
+
+    const ul = document.createElement("ul");
+    answers.forEach((ans, i) => {
+      const li = document.createElement("li");
+      li.textContent = ans;
+      ul.appendChild(li);
+    });
+    div.appendChild(ul);
+    container.appendChild(div);
+  }
+}
+
+document.getElementById("consolidateBtn").addEventListener("click", () => {
+  const rawText = document.getElementById("responsesInput").value;
+  if (!rawText.trim()) {
+    alert("Please paste at least one JSON response.");
+    return;
+  }
+  const responses = parseResponses(rawText);
+  if (responses.length === 0) {
+    alert("No valid JSON responses found. Check formatting.");
+    return;
+  }
+  const consolidated = consolidateAnswers(responses);
+  displayConsolidated(consolidated);
+
+  // Also generate summary
+  const summary = generateSummary(consolidated);
+  document.getElementById("summaryOutput").textContent = summary;
 });
