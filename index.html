@@ -1,32 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Go/No-Go Decision Form</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Go/No-Go Decision Form</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Go/No-Go Automated Response Form</h1>
+  <h1>Go/No-Go Decision Form</h1>
+  <form id="responseForm">
+    <div id="questionsContainer"></div>
+    <button type="submit">Submit Answers</button>
+  </form>
 
-    <label for="username">Your Name:</label>
-    <input type="text" id="username" placeholder="Enter your full name" />
+  <h2>Your JSON response (copy & save):</h2>
+  <textarea id="jsonOutput" rows="15" cols="100" readonly></textarea>
 
-    <label for="modeSelect">Choose Mode:</label>
-    <select id="modeSelect">
-      <option value="grants">GRANTS</option>
-      <option value="contracts">CONTRACTS</option>
-    </select>
-
-    <hr />
-
-    <div id="questionContainer"></div>
-
-    <button id="saveButton">💾 Save My Responses</button>
-  </div>
-
-  <script src="questions.js"></script>
-  <script src="script.js"></script>
+<script src="questions.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
